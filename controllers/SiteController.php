@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use Yii;
+use yii\db\Connection;
+use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
@@ -126,7 +128,22 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
-    public function actionHello(){
-        return $this->render(view: 'hello');
+    public function actionHello($message)
+    {
+        return $this->render('hello',[
+            'msg'=>$message
+        ]);
+    }
+    public function actionRequest()
+    {
+        try {
+            $posts = Yii::$app->db->createCommand([
+               'select * from country;'
+            ])->queryAll();
+
+        }
+        catch (Exception $d){
+            echo  '500';
+        }
     }
 }
